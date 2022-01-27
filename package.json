@@ -1,0 +1,22 @@
+{
+  "name": "todo-backend",
+  "version": "1.0.0",
+  "description": "my first expressJs application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g1fl3x/toDo-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/g1fl3x/toDo-backend/issues"
+  },
+  "homepage": "https://github.com/g1fl3x/toDo-backend#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
