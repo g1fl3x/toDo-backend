@@ -11,7 +11,7 @@ const PORT = 3000
 app.post('/task/:userId', createRoute)
 app.get('/tasks/:userId', readRoute)
 app.patch('/task/:userId/:taskId', updateRoute)
-app.delete('/task/:userId/:taskId', updateRoute)
+app.delete('/task/:userId/:taskId', deleteRoute)
 
 app.listen(PORT, () => {
 	console.log(`Example app listening on port ${PORT}`)
