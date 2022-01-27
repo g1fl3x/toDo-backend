@@ -1,11 +1,18 @@
 const express = require('express')
+
+const createRoute = require('./routes/create');
+const readRoute = require('./routes/read');
+const updateRoute = require('./routes/update');
+const deleteRoute = require('./routes/delete');
+
 const app = express()
-const port = 3000
+const PORT = 3000
 
-app.get('/', (req, res) => {
-	res.send('Hello World!')
-})
+app.post('/task/:userId', createRoute)
+app.get('/tasks/:userId', readRoute)
+app.patch('/task/:userId/:taskId', updateRoute)
+app.delete('/task/:userId/:taskId', updateRoute)
 
-app.listen(port, () => {
-	console.log(`Example app listening on port ${port}`)
+app.listen(PORT, () => {
+	console.log(`Example app listening on port ${PORT}`)
 })
