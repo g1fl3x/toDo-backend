@@ -2,9 +2,9 @@ const { updateTask } = require('../db')
 
 module.exports = (req, res) => {
     if (!/\d+$/.test(req.params.userId))
-        return res.status(404).json({ message: "userId is not int" })
+        return res.status(404).json({ message: "'userId' is not int" })
     if (!req.params.taskId)
-        return res.status(400).json({ message: "taskId is empty" })
+        return res.status(400).json({ message: "'taskId' is empty" })
 
     const validFields = ["done", "name"]
     const updateData = {}
