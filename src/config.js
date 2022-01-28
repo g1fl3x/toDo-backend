@@ -1,4 +1,5 @@
 module.exports = {
     apiUri: '/api',
-    port: 3000
+    port: 3000,
+    dbFile: 'db.json'
 }
