@@ -1,3 +1,3 @@
 module.exports = {
-    apiUriStarter: '/api'
+    apiUri: '/api'
 }
