@@ -1,3 +1,4 @@
 module.exports = {
-    apiUri: '/api'
+    apiUri: '/api',
+    port: 3000
 }

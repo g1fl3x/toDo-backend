@@ -1,11 +1,11 @@
 const express = require('express')
 const router = require('./router')
+const { port } = require('./config')
 
 const app = express()
-const PORT = 3000
 
 app.use(router)
 
-app.listen(PORT, () => {
-	console.log(`App listening on port ${PORT}`)
+app.listen(port, () => {
+	console.log(`App listening on port ${port}`)
 })
