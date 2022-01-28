@@ -13,7 +13,7 @@ module.exports = (req, res) => {
     ]
     try {
         addTask(...args)
-        res.send({message: "ok"});
+        res.send({ message: "ok" });
     } catch (e) {
         res.status(400).json({ message: e });
     }

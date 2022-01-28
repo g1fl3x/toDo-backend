@@ -14,9 +14,15 @@ module.exports = (req, res) => {
         }
     }
 
+    const args = [
+        req.params.userId,
+        req.params.taskId,
+        updateData
+    ]
+
     try {
-        updateTask(req.params.userId, req.params.taskId, updateData)
-        res.send({message: "ok"});
+        updateTask(...args)
+        res.send({ message: "ok" });
     } catch (e) {
         return res.status(400).json({ message: e })
     }

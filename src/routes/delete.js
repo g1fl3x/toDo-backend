@@ -6,8 +6,13 @@ module.exports = (req, res) => {
     if (!req.params.taskId)
         return res.status(400).json({ message: "taskId is empty" })
 
+    const args = [
+        req.params.userId,
+        req.params.taskId
+    ]
+
     try {
-        deleteTask(req.params.userId, req.params.taskId)
+        deleteTask(...args)
         return res.json({ message: "ok" })
     } catch (e) {
         return res.status(400).json({ message: e })
