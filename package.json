@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/g1fl3x/toDo-backend#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "uuid": "^8.3.2"
   }
 }
