@@ -1,4 +1,5 @@
 const { updateTask } = require('../db')
+const { errorsNormalize } = require('../utils')
 const { body, param, validationResult } = require('express-validator');
 const router = require('express').Router()
 
@@ -12,7 +13,7 @@ router.patch('/task/:userId/:taskId',
             const errors = validationResult(req)
 
             if (!errors.isEmpty()) {
-                return res.status(400).json({ message: errors })
+                return res.status(400).json({ message: errorsNormalize(errors) })
             }
 
             const updatedTask = {}

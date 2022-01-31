@@ -1,4 +1,5 @@
 const { getTasks } = require('../db')
+const { errorsNormalize } = require('../utils')
 const { param, query, validationResult } = require('express-validator');
 const router = require('express').Router()
 
@@ -13,7 +14,7 @@ router.get('/tasks/:userId',
             const errors = validationResult(req)
 
             if (!errors.isEmpty()) {
-                return res.status(400).json({ message: errors })
+                return res.status(400).json({ message: errorsNormalize(errors) })
             }
 
             const args = [
