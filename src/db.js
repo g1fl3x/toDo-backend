@@ -4,7 +4,6 @@ const { dbFile } = require('./config')
 
 module.exports = {
     getTasks: (userId, filterBy, order, pp, page) => {
-        // 1, 'all', 'asc', 5, 1
 
         const usersList = JSON.parse(fs.readFileSync(dbFile, 'utf-8'))
         const tasksList = usersList[String(userId)]

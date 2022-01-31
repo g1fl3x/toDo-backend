@@ -1,24 +1,30 @@
 const { addTask } = require('../db')
+const { body, param, validationResult } = require('express-validator');
 const router = require('express').Router()
 
-router.post('/task/:userId', (req, res) => {
-    try {
-        if (!/\d+$/.test(req.params.userId))
-            return res.status(404).json({ message: "'userId' is not int" })
-        if (String(req.body.name.length) < 1)
-            return res.status(404).json({ message: "field 'name' is too short" })
+router.post('/task/:userId',
+    param('userId').isInt().withMessage('param "userId" must be int'),
+    body('name').isLength({ min: 1 }).withMessage('body "name" is too short'),
+    body('done').optional().isBoolean().withMessage('body "done" is not boolean'),
+    (req, res) => {
+        try {
+            const errors = validationResult(req)
 
-        const args = [
-            req.params.userId,
-            req.body.name ?? "empty",
-            req.params.done ?? false,
-        ]
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ message: errors })
+            }
 
-        addTask(...args)
-        res.send({ message: "ok" });
-    } catch (e) {
-        res.status(400).json({ message: e });
-    }
-})
+            const args = [
+                req.params.userId,
+                req.body.name,
+                req.params.done ?? false,
+            ]
+
+            addTask(...args)
+            res.send({ message: "ok" });
+        } catch (e) {
+            res.status(400).json({ message: e });
+        }
+    })
 
 module.exports = router
