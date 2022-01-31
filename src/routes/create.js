@@ -1,6 +1,7 @@
 const { addTask } = require('../db')
+const router = require('express').Router()
 
-module.exports = (req, res) => {
+router.post('/task/:userId', (req, res) => {
     try {
         if (!/\d+$/.test(req.params.userId))
             return res.status(404).json({ message: "'userId' is not int" })
@@ -18,4 +19,6 @@ module.exports = (req, res) => {
     } catch (e) {
         res.status(400).json({ message: e });
     }
-};
+})
+
+module.exports = router
