@@ -41,6 +41,7 @@ Tasks.sync()
 
 module.exports = {
     getTasks: async (userId, filterBy, order, pp, page) => {
+
         const result = await Tasks.findAll({
             attributes: ['uuid', 'name', 'done', 'createdAt']
         })
@@ -58,9 +59,11 @@ module.exports = {
         return { count: filteredTasks.length, tasks: [...outputTasks] }
     },
     addTask: async (userId, name, done) => {
+
         await Tasks.create({ name: name, done: done })
     },
     deleteTask: async (userId, taskId) => {
+
         const result = await Tasks.findOne({
             where: {
                 uuid: taskId,

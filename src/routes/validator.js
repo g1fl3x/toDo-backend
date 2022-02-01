@@ -16,8 +16,8 @@ router.get('/tasks/:userId',
     param('userId').isInt().withMessage('param "userId" must be int'),
     query('filterBy').isIn(['all', 'done', 'undone']).withMessage('query "filterBy" must be in array: ["all", "done", "undone"]'),
     query('order').isIn(['asc', 'desc']).withMessage('query "order" must be in array: ["asc", "desc"]'),
-    query('pp').isInt({min: 1, max: 20}).withMessage('query "pp" must be in range [1...20]'),
-    query('page').isInt({min: 1}).withMessage('query "page" must be greater then 0'),
+    query('pp').isInt({ min: 1, max: 20 }).withMessage('query "pp" must be in range [1...20]'),
+    query('page').isInt({ min: 1 }).withMessage('query "page" must be greater then 0'),
     (req, res, next) => {
         getErrors(validationResult(req), res) ?? next()
     })
