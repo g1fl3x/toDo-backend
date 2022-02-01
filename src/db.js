@@ -20,7 +20,8 @@ Tasks.init(
     {
         uuid: {
             type: DataTypes.UUID,
-            defaultValue: Sequelize.UUIDV4
+            defaultValue: Sequelize.UUIDV4,
+            primaryKey: true
         },
         name: {
             type: DataTypes.TEXT,
@@ -50,12 +51,11 @@ module.exports = {
             if (filterBy === 'undone') return task.done ? false : true
             return true
         })
-        const count = filteredTasks.length
 
         filteredTasks.sort((a, b) => order === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt)
         const outputTasks = filteredTasks.slice((page - 1) * pp, page * pp)
 
-        return { count: count, tasks: [...outputTasks] }
+        return { count: filteredTasks.length, tasks: [...outputTasks] }
     },
     addTask: async (userId, name, done) => {
         await Tasks.create({ name: name, done: done })
