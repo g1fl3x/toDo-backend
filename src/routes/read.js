@@ -1,7 +1,7 @@
 const { getTasks } = require('../db')
 const router = require('express').Router()
 
-router.get('/tasks/:userId', (req, res) => {
+router.get('/tasks/:userId', async (req, res) => {
         try {
             const args = [
                 req.params.userId,
@@ -11,7 +11,8 @@ router.get('/tasks/:userId', (req, res) => {
                 req.query.page
             ]
 
-            return res.json(getTasks(...args))
+            const result =  await getTasks(...args)
+            return res.json(result)
         } catch (e) {
             return res.status(400).json({ message: e })
         }

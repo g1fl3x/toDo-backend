@@ -1,7 +1,7 @@
 const { addTask } = require('../db')
 const router = require('express').Router()
 
-router.post('/task/:userId', (req, res) => {
+router.post('/task/:userId', async (req, res) => {
         try {
             const args = [
                 req.params.userId,
@@ -9,7 +9,7 @@ router.post('/task/:userId', (req, res) => {
                 req.params.done ?? false,
             ]
 
-            addTask(...args)
+            await addTask(...args)
             res.send({ message: "ok" });
         } catch (e) {
             res.status(400).json({ message: e });
