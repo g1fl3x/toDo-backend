@@ -2,17 +2,19 @@ const { deleteTask } = require('../db')
 const router = require('express').Router()
 
 router.delete('/task/:userId/:taskId', async (req, res) => {
-        try {
-            const args = [
-                req.params.userId,
-                req.params.taskId
-            ]
 
-            await deleteTask(...args)
+    const args = [
+        req.params.userId,
+        req.params.taskId
+    ]
+
+    deleteTask(...args).then(
+        () => {
             return res.json({ message: "ok" })
-        } catch (e) {
-            return res.status(400).json({ message: e })
-        }
-    })
+        },
+        (err) => {
+            return res.status(400).json({ message: String(err) })
+        })
+})
 
 module.exports = router
