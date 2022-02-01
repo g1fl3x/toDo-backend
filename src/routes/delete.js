@@ -8,7 +8,6 @@ router.delete('/task/:userId/:taskId', (req, res) => {
                 req.params.taskId
             ]
 
-
             deleteTask(...args)
             return res.json({ message: "ok" })
         } catch (e) {
