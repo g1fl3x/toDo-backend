@@ -1,12 +1,50 @@
-const { v4 } = require('uuid')
-const fs = require('fs')
-const { dbFile } = require('./config')
+const { Sequelize, DataTypes, Model } = require('sequelize');
+const { dbFile } = require('./config');
+const console = require('console');
+
+const sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage: dbFile
+})
+
+try {
+    sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+} catch (error) {
+    console.error('Unable to connect to the database:', error);
+}
+
+class Tasks extends Model { }
+
+Tasks.init(
+    {
+        uuid: {
+            type: DataTypes.UUID,
+            defaultValue: Sequelize.UUIDV4
+        },
+        name: {
+            type: DataTypes.TEXT,
+        },
+        done: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        }
+    },
+    {
+        sequelize, // Экземпляр подключения
+        modelName: 'Tasks', // Название модели
+    }
+)
+
+Tasks.sync()
 
 module.exports = {
-    getTasks: (userId, filterBy, order, pp, page) => {
+    getTasks: async (userId, filterBy, order, pp, page) => {
+        const result = await Tasks.findAll({
+            attributes: ['uuid', 'name', 'done', 'createdAt']
+        })
 
-        const usersList = JSON.parse(fs.readFileSync(dbFile, 'utf-8'))
-        const tasksList = usersList[String(userId)]
+        const tasksList = result.map(task => task.dataValues)
         const filteredTasks = tasksList.filter(task => {
             if (filterBy === 'done') return task.done ? true : false
             if (filterBy === 'undone') return task.done ? false : true
@@ -16,28 +54,34 @@ module.exports = {
 
         filteredTasks.sort((a, b) => order === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt)
         const outputTasks = filteredTasks.slice((page - 1) * pp, page * pp)
-        return { count: count, tasks: [...outputTasks] }
 
+        return { count: count, tasks: [...outputTasks] }
     },
-    addTask: (userId, name, done) => {
-        const task = {
-            uuid: v4(),
-            name: name,
-            done: done,
-            createdAt: +new Date(),
+    addTask: async (userId, name, done) => {
+        await Tasks.create({ name: name, done: done })
+    },
+    deleteTask: async (userId, taskId) => {
+        const result = await Tasks.findOne({
+            where: {
+                uuid: taskId,
+            },
+        })
+        await result.destroy()
+    },
+    updateTask: async (userId, taskId, name, done) => {
+
+        const result = await Tasks.findOne({
+            where: {
+                uuid: taskId,
+            },
+        })
+
+        if (name !== undefined) {
+            result.name = name
         }
-        const usersList = JSON.parse(fs.readFileSync(dbFile, 'utf-8'))
-        usersList[String(userId)].push(task)
-        fs.writeFileSync(dbFile, JSON.stringify(usersList))
-    },
-    deleteTask: (userId, taskId) => {
-        const usersList = JSON.parse(fs.readFileSync(dbFile, 'utf-8'))
-        usersList[String(userId)] = usersList[String(userId)].filter(task => taskId === task.uuid ? false : true)
-        fs.writeFileSync(dbFile, JSON.stringify(usersList))
-    },
-    updateTask: (userId, taskId, newTask) => {
-        const usersList = JSON.parse(fs.readFileSync(dbFile, 'utf-8'))
-        usersList[String(userId)] = usersList[String(userId)].map(task => taskId === task.uuid ? { ...task, ...newTask } : task)
-        fs.writeFileSync(dbFile, JSON.stringify(usersList))
+        if (done !== undefined) {
+            result.done = done
+        }
+        await result.save()
     },
 }
