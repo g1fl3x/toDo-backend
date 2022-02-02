@@ -6,7 +6,7 @@ my first expressJs application
 sudo -u postgres psql postgres
 ```
 ```
-\password postgres
+\password postgres # you can skip this
 ```
 2. migrations:
 ```
