@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
 		{
 			sequelize, // Экземпляр подключения
 			modelName: 'Task', // Название модели
+			createdAt: true
 		}
 	)
 	return Task;
