@@ -20,12 +20,9 @@ router.patch('/task/:userId/:taskId',
                 },
             })
     
-            if (req.body.name !== undefined) {
-                result.name = req.body.name
-            }
-            if (req.body.done !== undefined) {
-                result.done = req.body.done
-            }
+            result.name = req.body.name
+            result.done = req.body.done
+
             await result.save()
             return res.json(result)
         } catch (err) {
