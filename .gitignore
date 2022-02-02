@@ -3,4 +3,7 @@ node_modules
 
 # ignore database
 src/database.sqlite
+
+# ignore configs
 src/config/config.json
+src/.env
