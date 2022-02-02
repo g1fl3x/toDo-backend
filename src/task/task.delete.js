@@ -1,4 +1,4 @@
-const { deleteTask } = require('../db')
+const { Task } = require('../db')
 const { errorsCheck } = require('../utils')
 const { param, validationResult } = require('express-validator')
 
@@ -10,18 +10,17 @@ router.delete('/task/:userId/:taskId',
     errorsCheck,
 
     async (req, res) => {
-        const args = [
-            req.params.userId,
-            req.params.taskId
-        ]
-
-        deleteTask(...args).then(
-            () => {
-                return res.json({ message: "ok" })
-            },
-            (err) => {
-                return res.status(400).json({ message: String(err) })
+        try {
+            const result = await Task.findOne({
+                where: {
+                    uuid: req.params.taskId,
+                },
             })
+            await result.destroy()
+            return res.json(result)
+        } catch (err) {
+            return res.status(500).json({ message: String(err) })
+        }
     })
 
 module.exports = router

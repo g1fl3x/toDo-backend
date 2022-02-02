@@ -1,4 +1,4 @@
-const { updateTask } = require('../db')
+const { Task } = require('../db')
 const { errorsCheck } = require('../utils')
 const { body, param, validationResult } = require('express-validator')
 
@@ -12,20 +12,25 @@ router.patch('/task/:userId/:taskId',
     errorsCheck,
 
     async (req, res) => {
-        const args = [
-            req.params.userId,
-            req.params.taskId,
-            req.body.name,
-            req.body.done,
-        ]
 
-        updateTask(...args).then(
-            () => {
-                return res.json({ message: "ok" })
-            },
-            (err) => {
-                return res.status(400).json({ message: String(err) })
+        try {
+            const result = await Task.findOne({
+                where: {
+                    uuid: req.params.taskId,
+                },
             })
-
+    
+            if (req.body.name !== undefined) {
+                result.name = req.body.name
+            }
+            if (req.body.done !== undefined) {
+                result.done = req.body.done
+            }
+            await result.save()
+            return res.json(result)
+        } catch (err) {
+            return res.status(400).json({ message: String(err) })
+        }
     })
+
 module.exports = router

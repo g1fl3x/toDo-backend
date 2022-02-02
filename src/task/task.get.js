@@ -1,4 +1,4 @@
-const { getTasks } = require('../db')
+const { Task } = require('../db')
 const { errorsCheck } = require('../utils')
 const { param, query } = require('express-validator')
 
@@ -13,21 +13,26 @@ router.get('/tasks/:userId',
     errorsCheck,
 
     async (req, res) => {
-        const args = [
-            req.params.userId,
-            req.query.filterBy,
-            req.query.order,
-            req.query.pp,
-            req.query.page
-        ]
+        try {
+            const result = await Task.findAll()
 
-        getTasks(...args).then(
-            (result) => {
-                return res.json(result)
-            },
-            (err) => {
-                return res.status(400).json({ message: String(err) })
+            const tasksList = result.map(task => task.dataValues)
+            const filteredTasks = tasksList.filter(task => {
+                if (req.query.filterBy === 'done') return task.done ? true : false
+                if (req.query.filterBy === 'undone') return task.done ? false : true
+                return true
             })
+
+            filteredTasks.sort((a, b) =>
+                req.query.order === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt
+            )
+            const outputTasks = filteredTasks.slice(
+                (req.query.page - 1) * req.query.pp, req.query.page * req.query.pp
+            )
+            return res.json({ count: filteredTasks.length, tasks: [...outputTasks] })
+        } catch (err) {
+            return res.status(400).json({ message: String(err) })
+        }
     })
 
 module.exports = router
