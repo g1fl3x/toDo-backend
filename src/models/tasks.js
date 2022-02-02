@@ -2,7 +2,7 @@
 const { Sequelize, Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-	class Tasks extends Model {
+	class Task extends Model {
 		/**
 		 * Helper method for defining associations.
 		 * This method is not a part of Sequelize lifecycle.
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 			// define association here
 		}
 	}
-	Tasks.init(
+	Task.init(
 		{
 			uuid: {
 				type: DataTypes.UUID,
@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			sequelize, // Экземпляр подключения
-			modelName: 'Tasks', // Название модели
+			modelName: 'Task', // Название модели
 		}
 	)
-	return Tasks;
+	return Task;
 };

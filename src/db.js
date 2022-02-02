@@ -7,12 +7,12 @@ const sequelize = new Sequelize(dbName, username, password, {
     host: host,
 })
 
-Tasks = getTaskModel(sequelize, DataTypes)
+Task = getTaskModel(sequelize, DataTypes)
 
 module.exports = {
     getTasks: async (userId, filterBy, order, pp, page) => {
 
-        const result = await Tasks.findAll({
+        const result = await Task.findAll({
             attributes: ['uuid', 'name', 'done', 'createdAt']
         })
 
@@ -30,11 +30,11 @@ module.exports = {
     },
     addTask: async (userId, name, done) => {
 
-        await Tasks.create({ name: name, done: done })
+        await Task.create({ name: name, done: done })
     },
     deleteTask: async (userId, taskId) => {
 
-        const result = await Tasks.findOne({
+        const result = await Task.findOne({
             where: {
                 uuid: taskId,
             },
@@ -43,7 +43,7 @@ module.exports = {
     },
     updateTask: async (userId, taskId, name, done) => {
 
-        const result = await Tasks.findOne({
+        const result = await Task.findOne({
             where: {
                 uuid: taskId,
             },
