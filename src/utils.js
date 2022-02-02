@@ -1,8 +1,10 @@
+const { validationResult } = require('express-validator')
+
 module.exports = {
-    normalizeError: (errors) => {
-        if (!errors.isEmpty()) {
-            return { message: errors.errors.map(err => err.msg).join(', ') }
-        }
-        return undefined
+    errorsCheck: (req, res, next) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty())
+            return res.status(400).json({ message: errors.errors.map(err => err.msg).join(', ') })
+        next();
     }
 }
