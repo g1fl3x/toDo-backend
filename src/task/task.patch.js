@@ -1,5 +1,5 @@
 const { updateTask } = require('../db')
-const { normalizeError } = require('../utils')
+const { errorsCheck } = require('../utils')
 const { body, param, validationResult } = require('express-validator')
 
 const router = require('express').Router()
@@ -9,13 +9,9 @@ router.patch('/task/:userId/:taskId',
     param('taskId').notEmpty().withMessage('param "taskId" is empty'),
     body('done').optional().isBoolean().withMessage('body "done" is not boolean'),
     body('name').optional().isLength({ min: 1 }).withMessage('body "name" is too short'),
+    errorsCheck,
+
     async (req, res) => {
-
-        const response = normalizeError(validationResult(req))
-        if (response !== undefined) {
-            return res.status(400).json(response)
-        }
-
         const args = [
             req.params.userId,
             req.params.taskId,

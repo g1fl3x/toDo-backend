@@ -1,6 +1,6 @@
 const { getTasks } = require('../db')
-const { normalizeError } = require('../utils')
-const { param, query, validationResult } = require('express-validator')
+const { errorsCheck } = require('../utils')
+const { param, query } = require('express-validator')
 
 const router = require('express').Router()
 
@@ -10,13 +10,9 @@ router.get('/tasks/:userId',
     query('order').isIn(['asc', 'desc']).withMessage('query "order" must be in array: ["asc", "desc"]'),
     query('pp').isInt({ min: 1, max: 20 }).withMessage('query "pp" must be in range [1...20]'),
     query('page').isInt({ min: 1 }).withMessage('query "page" must be greater then 0'),
+    errorsCheck,
+
     async (req, res) => {
-
-        const response = normalizeError(validationResult(req))
-        if (response !== undefined) {
-            return res.status(400).json(response)
-        }
-
         const args = [
             req.params.userId,
             req.query.filterBy,
