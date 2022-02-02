@@ -1,43 +1,13 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
-const { dbFile } = require('./config');
-const console = require('console');
+const { Sequelize, DataTypes } = require('sequelize');
+const { dbType, dbName, username, password, host } = require('./config')
+const getTaskModel = require('./models/tasks')
 
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: dbFile
+const sequelize = new Sequelize(dbName, username, password, {
+    dialect: dbType,
+    host: host,
 })
 
-try {
-    sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-} catch (error) {
-    console.error('Unable to connect to the database:', error);
-}
-
-class Tasks extends Model { }
-
-Tasks.init(
-    {
-        uuid: {
-            type: DataTypes.UUID,
-            defaultValue: Sequelize.UUIDV4,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.TEXT,
-        },
-        done: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false,
-        }
-    },
-    {
-        sequelize, // Экземпляр подключения
-        modelName: 'Tasks', // Название модели
-    }
-)
-
-Tasks.sync()
+Tasks = getTaskModel(sequelize, DataTypes)
 
 module.exports = {
     getTasks: async (userId, filterBy, order, pp, page) => {
