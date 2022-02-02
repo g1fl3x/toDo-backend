@@ -12,7 +12,6 @@ router.patch('/task/:userId/:taskId',
     errorsCheck,
 
     async (req, res) => {
-
         try {
             const result = await Task.findOne({
                 where: {
