@@ -1,5 +1,6 @@
-const { body, param, query, validationResult } = require('express-validator');
-const router = require('express').Router()
+const express = require('express')
+const { body, param, query, validationResult } = require('express-validator')
+const router = express.Router()
 
 function errorsNormalize(errors) {
     return errors.errors.map(err => err.msg).join(', ')
@@ -45,5 +46,11 @@ router.post('/task/:userId',
     (req, res, next) => {
         getErrors(validationResult(req), res) ?? next()
     })
+
+
+router.use('/', require('./task.get'))
+router.use('/', require('./task.patch'))
+router.use('/', require('./task.post'))
+router.use('/', require('./task.delete'))
 
 module.exports = router
