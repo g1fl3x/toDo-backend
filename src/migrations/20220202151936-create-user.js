@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
 	async up(queryInterface, Sequelize) {
 		await queryInterface.createTable('Task', {
@@ -15,6 +16,10 @@ module.exports = {
 			},
 			createdAt: {
 				allowNull: false,
+				type: Sequelize.DATE
+			},
+			updatedAt: {
+				allowNull: true,
 				type: Sequelize.DATE
 			}
 		});
