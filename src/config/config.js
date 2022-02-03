@@ -2,10 +2,10 @@ require('dotenv').config({ path: `${__dirname}/.env` })
 
 module.exports = {
     apiUri: '/api',
-    dbType: 'postgres',
-    port: process.env.PORT || 3000,
+    dialect: 'postgres',
+    appPort: process.env.PORT || 3000,
     username: process.env.USERNAME || '',
     password: process.env.PASSWORD || '',
-    dbName: process.env.DBNAME || '',
+    database: process.env.DBNAME || 'postgres',
     host: process.env.HOST || 'localhost'
 }

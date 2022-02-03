@@ -1,7 +1,6 @@
 const express = require('express')
-const router = require('./task/router')
 const cors = require('cors')
-const { port, apiUri } = require('./config/conf')
+const { appPort, apiUri } = require('./config/config')
 const app = express()
 
 app.use(cors());
@@ -9,6 +8,6 @@ app.options('*', cors());
 app.use(express.json())
 app.use(apiUri, require('./task/router'))
 
-app.listen(port, () => {
-	console.log(`App listening on port ${port}`)
+app.listen(appPort, () => {
+	console.log(`App listening on port ${appPort}`)
 })
