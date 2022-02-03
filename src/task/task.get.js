@@ -14,22 +14,13 @@ router.get('/tasks/:userId',
 
     async (req, res) => {
         try {
-            const result = await Task.findAll()
-
-            const tasksList = result.map(task => task.dataValues)
-            const filteredTasks = tasksList.filter(task => {
-                if (req.query.filterBy === 'done') return task.done ? true : false
-                if (req.query.filterBy === 'undone') return task.done ? false : true
-                return true
-            })
-
-            filteredTasks.sort((a, b) =>
-                req.query.order === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt
-            )
-            const outputTasks = filteredTasks.slice(
-                (req.query.page - 1) * req.query.pp, req.query.page * req.query.pp
-            )
-            return res.json({ message: "ok", count: filteredTasks.length, tasks: [...outputTasks] })
+            const filteredTasks = await Task.findAndCountAll({
+                where: req.query.filterBy === 'all' ? {} : { done: req.query.filterBy === 'done' ? true : false },
+                order: [['createdAt', req.query.order]],
+                offset: req.query.pp * (req.query.page - 1),
+                limit: req.query.pp
+            });
+            return res.json({ message: "ok", count: filteredTasks.count, tasks: filteredTasks["rows"] })
         } catch (err) {
             return res.status(500).json({ message: String(err) })
         }
