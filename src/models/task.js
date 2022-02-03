@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			name: {
 				type: DataTypes.TEXT,
+				unique: true
 			},
 			done: {
 				type: DataTypes.BOOLEAN,
