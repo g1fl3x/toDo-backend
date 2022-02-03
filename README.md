@@ -11,7 +11,7 @@ sudo -u postgres psql postgres
 
 2. create .env
 ```
-nano config/.env
+nano src/config/.env
 ```
 
 .env example:
@@ -25,11 +25,11 @@ DB_NAME=postgres
 3. migrations:
 for run migration:
 ```
-npx sequelize-cli db:migrate
+cd src && npx sequelize-cli db:migrate
 ```
 for restore old migration:
 ```
-npx sequelize-cli db:migrate:undo
+cd src && npx sequelize-cli db:migrate:undo
 ```
 
 4. run:
