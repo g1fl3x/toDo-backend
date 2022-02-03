@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-router.use('/', require('./task.get'))
-router.use('/', require('./task.patch'))
-router.use('/', require('./task.post'))
-router.use('/', require('./task.delete'))
+const recursive = require('recursive-readdir-sync');
+
+recursive(__dirname).forEach((file) => {
+    const spiltedFile = file.split('/')
+    spiltedFile.pop() !== 'router.js' ? router.use('/', require(file)) : undefined
+});
 
 module.exports = router
