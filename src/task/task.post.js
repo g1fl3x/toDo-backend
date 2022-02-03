@@ -13,8 +13,7 @@ router.post('/task/:userId',
     async (req, res) => {
         try {
             const result = await Task.create({
-                name: req.body.name,
-                done: req.params.done ?? false
+                name: req.body.name
             })
             return res.json(result)
         } catch (err) {

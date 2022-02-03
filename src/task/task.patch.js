@@ -13,11 +13,7 @@ router.patch('/task/:userId/:taskId',
 
     async (req, res) => {
         try {
-            const result = await Task.findOne({
-                where: {
-                    uuid: req.params.taskId,
-                },
-            })
+            const result = await Task.findByPk(req.params.taskId)
     
             result.name = req.body.name
             result.done = req.body.done
