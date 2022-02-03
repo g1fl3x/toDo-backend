@@ -12,8 +12,8 @@ router.post('/task/:userId',
 
     async (req, res) => {
         try {
-            const find = await Task.findOne({ where: { name: req.body.name } })
-            if (find !== null) {
+            const existingTask = await Task.findOne({ where: { name: req.body.name } })
+            if (existingTask) {
                 return res.status(400).json({ message: "task with same name already exists" })
             }
 
