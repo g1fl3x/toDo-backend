@@ -1,4 +1,4 @@
-const { Task } = require('../db')
+const { Task } = require('../models/index')
 const { errorsCheck } = require('../utils')
 const { param, query } = require('express-validator')
 
