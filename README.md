@@ -1,22 +1,38 @@
 # toDo-backend
 my first expressJs application
 
-1. change postgres user password:
+1. change postgres user password (optional):
 ```
 sudo -u postgres psql postgres
 ```
 ```
 \password postgres # you can skip this
 ```
-2. migrations:
+
+2. create .env
 ```
-cd src && npx sequelize-cli init # to create migrations env
+nano config/.env
 ```
-after this, change config/config.js, to your data and run migration
+
+.env example:
+```
+APP_PORT=3000
+USERNAME=mySecretUsername
+PASSWORD=myVeryVeryVerySecretPassw0rd
+DB_NAME=postgres
+```
+
+3. migrations:
+for run migration:
 ```
 npx sequelize-cli db:migrate
 ```
-3. run:
+for restore old migration:
 ```
-cd src && env USERNAME=myUsername PASSWORD=mySecretPassword DBNAME=myDatabaseName node app.js
+npx sequelize-cli db:migrate:undo
+```
+
+4. run:
+```
+cd src && node app.js
 ```
