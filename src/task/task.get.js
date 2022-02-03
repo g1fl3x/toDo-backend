@@ -31,7 +31,7 @@ router.get('/tasks/:userId',
             )
             return res.json({ count: filteredTasks.length, tasks: [...outputTasks] })
         } catch (err) {
-            return res.status(400).json({ message: String(err) })
+            return res.status(500).json({ message: String(err) })
         }
     })
 

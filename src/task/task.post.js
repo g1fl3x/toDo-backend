@@ -18,7 +18,7 @@ router.post('/task/:userId',
             })
             return res.json(result)
         } catch (err) {
-            return res.status(400).json({ message: String(err) })
+            return res.status(500).json({ message: String(err) })
         }
     })
 
