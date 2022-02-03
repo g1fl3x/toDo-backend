@@ -20,13 +20,13 @@ router.patch('/task/:userId/:taskId',
 
     async (req, res) => {
         try {
-            const result = await Task.findByPk(req.params.taskId)
+            const task = await Task.findByPk(req.params.taskId)
 
-            result.name = req.body.name
-            result.done = req.body.done
+            task.name = req.body.name
+            task.done = req.body.done
 
-            await result.save()
-            return res.json(result)
+            await task.save()
+            return res.json({ message: "ok", task: task })
         } catch (err) {
             return res.status(500).json({ message: String(err) })
         }

@@ -29,7 +29,7 @@ router.get('/tasks/:userId',
             const outputTasks = filteredTasks.slice(
                 (req.query.page - 1) * req.query.pp, req.query.page * req.query.pp
             )
-            return res.json({ count: filteredTasks.length, tasks: [...outputTasks] })
+            return res.json({ message: "ok", count: filteredTasks.length, tasks: [...outputTasks] })
         } catch (err) {
             return res.status(500).json({ message: String(err) })
         }
