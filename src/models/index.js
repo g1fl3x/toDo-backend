@@ -1,14 +1,14 @@
 'use strict';
 
-const { dbType, dbName, username, password, host } = require('../config/conf')
+const { dialect, database, username, password, host } = require('../config/config')
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const db = {};
 
-const sequelize = new Sequelize(dbName, username, password, {
-  dialect: dbType,
+const sequelize = new Sequelize(database, username, password, {
+  dialect: dialect,
   host: host,
   define: {
       freezeTableName: true
